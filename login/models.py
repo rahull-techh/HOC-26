@@ -11,10 +11,10 @@ class Registration(models.Model):
     name = models.CharField(max_length=50)
     number = PhoneNumberField(_("Phone Number"),unique=True , region ='IN')
     st_id = models.CharField(
-        max_length =7,
+        max_length =8,
         unique =True,
         validators= [RegexValidator( regex = r'^\d{7,8}$',
-                                    message="Enter a Valid 6-7 digit Student number")])
+                                    message="Enter a Valid 7-8 digit Student number")])
     uni_id = models.CharField(
         max_length=13,
         unique=True,
@@ -60,5 +60,5 @@ class Registration(models.Model):
     residence = models.CharField(max_length=1,choices=RESIDENCE_CHOICE)
 
 
-    email = models.EmailField(_("Email Address"), max_length=254)
+    email = models.EmailField(_("Email Address"), max_length=254,unique=True)
     password = models.CharField(null=False)

@@ -1,87 +1,99 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <h2>Student Registration</h2>
+    <h2>HOUR OF CODE</h2>
 
     <form method="POST">
         {% csrf_token %}
 
         <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" maxlength="50" required>
+        <input type="text" id="name" name="name" 
+        value="{{ form_data.name }}"
+        maxlength="50" required>
 
         <label for="number">Phone Number</label>
         <input type="tel" id="number" name="number"
+        value="{{ form_data.number }}"
                placeholder="e.g. +919999999999" required>
 
         <label for="st_id">Student ID</label>
         <input type="text" id="st_id" name="st_id"
-               minlength="6" maxlength="7"
-               pattern="[0-9]{6,7}" required
+        value="{{ form_data.st_id }}"
+               minlength="6" maxlength="8"
+               pattern="[0-9]{6,8}" required
                placeholder="Enter your College student number" required>
                
-               {% if error %}
+               {% if error1 %}
                <p class="error-message">{{ error1 }}</p>
             {% endif %}
 
         <label for="uni_id">University ID</label>
         <input type="text" id="uni_id" name="uni_id"
+        value="{{ form_data.uni_id}}"
                minlength="13" maxlength="13"
                pattern="[0-9]{13}" required
                placeholder="Enter 13 digits University roll number" required>
-               {% if error %}
+               {% if error2 %}
                <p class="error-message">{{ error2 }}</p>
                {% endif %}
 
-        <label for="gender">Gender</label>
-        <select id="gender" name="gender" required>
-            <option value="">Select Gender</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-            <option value="O">Others</option>
-            <option value="N">Prefer not to say</option>
-        </select>
+        
+<label for="gender">Gender</label>
+<select id="gender" name="gender" required>
+    <option value="">Select Gender</option>
+    <option value="M" {% if form_data.gender == "M" %}selected{% endif %}>Male</option>
+    <option value="F" {% if form_data.gender == "F" %}selected{% endif %}>Female</option>
+    <option value="O" {% if form_data.gender == "O" %}selected{% endif %}>Others</option>
+    <option value="N" {% if form_data.gender == "N" %}selected{% endif %}>Prefer not to say</option>
+</select>
 
-        <label for="year">Year</label>
-        <select id="year" name="year" required>
-            <option value="">Select Year</option>
-            <option value="2">2nd Year</option>
-            <option value="3">3rd Year</option>
-            <option value="4">4th Year</option>
-        </select>
 
-        <label for="branch">Branch</label>
-        <select id="branch" name="branch" required>
-            <option value="">Select Branch</option>
-            <option value="CSE">CSE</option>
-            <option value="AIML">CSE (AI & ML)</option>
-            <option value="DS">CSE (Data Science)</option>
-            <option value="CS">Computer Science</option>
-            <option value="IT">Information Technology</option>
-            <option value="CSIT">CS-IT</option>
-            <option value="ECE">ECE</option>
-            <option value="EN">Electronics & Instrumentation</option>
-            <option value="OTH">Others</option>
-        </select>
 
-        <label for="residence">Residence</label>
-        <select id="residence" name="residence" required>
-            <option value="">Select Residence</option>
-            <option value="D">Day Scholar</option>
-            <option value="H">Hosteller</option>
-        </select>
+<label for="year">Year</label>
+<select id="year" name="year" required>
+    <option value="">Select Year</option>
+    <option value="2" {% if form_data.year == "2" %}selected{% endif %}>2nd Year</option>
+    <option value="3" {% if form_data.year == "3" %}selected{% endif %}>3rd Year</option>
+    <option value="4" {% if form_data.year == "4" %}selected{% endif %}>4th Year</option>
+</select>
+
+<label for="branch">Branch</label>
+<select id="branch" name="branch" required>
+    <option value="">Select Branch</option>
+    <option value="CSE" {% if form_data.branch == "CSE" %}selected{% endif %}>CSE</option>
+    <option value="AIML" {% if form_data.branch == "AIML" %}selected{% endif %}>CSE (AI &amp; ML)</option>
+    <option value="DS" {% if form_data.branch == "DS" %}selected{% endif %}>CSE (Data Science)</option>
+    <option value="CS" {% if form_data.branch == "CS" %}selected{% endif %}>Computer Science</option>
+    <option value="IT" {% if form_data.branch == "IT" %}selected{% endif %}>Information Technology</option>
+    <option value="CSIT" {% if form_data.branch == "CSIT" %}selected{% endif %}>CS-IT</option>
+    <option value="ECE" {% if form_data.branch == "ECE" %}selected{% endif %}>ECE</option>
+    <option value="EN" {% if form_data.branch == "EN" %}selected{% endif %}>Electronics &amp; Instrumentation</option>
+    <option value="OTH" {% if form_data.branch == "OTH" %}selected{% endif %}>Others</option>
+</select>
+
+<label for="residence">Residence</label>
+<select id="residence" name="residence" required>
+    <option value="">Select Residence</option>
+    <option value="D" {% if form_data.residence == "D" %}selected{% endif %}>Day Scholar</option>
+    <option value="H" {% if form_data.residence == "H" %}selected{% endif %}>Hosteller</option>
+</select>
+
 
         <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" maxlength="254" required>
-        {% if error %}
+        <input type="email" id="email" name="email"
+        value="{{ form_data.email }}"
+        maxlength="254" required>
+        {% if error3 %}
         <p class="error-message">{{ error3 }}</p>
         {% endif %}
         
 
         <label for="password">Password</label>
         <input type="password" id="password" name="password"
+        value="{{ form_data.password}}"
         minlength="8" required
         placeholder="e.g. password@123" required>
-        {% if error %}
+        {% if error4 %}
         <p class="error-message">{{ error4 }}</p>
         {% endif %}
 

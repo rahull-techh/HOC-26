@@ -19,6 +19,8 @@ def register(request):
             "message":"POST method required"
         }, status=405)
 
+    form_data = request.POST
+
 
     name = request.POST.get("name")
     number = request.POST.get("number")
@@ -36,33 +38,33 @@ def register(request):
     p = s1[:2]
     q=u1[:2]
 
-    if p != '25' or p!='24' or p!='23':
-        return render(request,'registration.html',{"error1":"Enter a valid Student number starting with 23 ,24 or 25"},status=400)
+    if p not in ('23','24','25'):
+        return render(request,'registration.html',{"error1":"Enter a valid Student number starting with 23 ,24 or 25","form_data":form_data},status=400)
     elif p != q:
-        return render(request,'registration.html',{"error2":f"Enter a valid University roll number starting with {p}"},status=400)
+        return render(request,'registration.html',{"error2":f"Enter a valid University roll number starting with {p}","form_data":form_data},status=400)
 
     if st_id not in email:
-        return render(request,'registration.html',{"error3":f"Enter valid College email Containing {st_id}"},status=400)
+        return render(request,'registration.html',{"error3":f"Enter valid College email Containing {st_id}","form_data":form_data},status=400)
 
     if not (('@' in password or '$' in password) and password.isalnum()):
-        return render(request , 'registration.html', {"error4":"Password is weak, use '@', '$' and combination of aphabets and numbers"},status=400)
+        return render(request , 'registration.html', {"error4":"Password is weak, use '@', '$' and combination of aphabets and numbers","form_data":form_data},status=400)
 
     if not name or not email or not password or not number or not st_id or not uni_id or not gender or not year or not branch or not residence:
         return JsonResponse({
             "error": "All fields  are required"
-        },status=400)
+        ,"form_data":form_data},status=400)
 
     try:
         EmailValidator()(email)
     except ValidationError:
         return JsonResponse({
             "error":"Enter a Valid email"
-        }, status=400)
+        ,"form_data":form_data}, status=400)
 
     if User.objects.filter(email=email).exists():
         return JsonResponse({
             "error":"Email already exist"
-        },status=400)
+        ,"form_data":form_data},status=400)
     if User.objects.filter(st_id=st_id).exists():
         return JsonResponse({
             "error":"Student already registered"
