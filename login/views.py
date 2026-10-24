@@ -2,54 +2,45 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
-from django.core.validators import validate_email
+from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 
 
-def home(request):
-    return JsonResponse({
-        "message": "Welcome to HOUR OF CODE",
-        "user": str(request.user),
-        "authenticated": request.user.is_authenticated,
-    })
+
 
 @csrf_exempt
 def register(request):
 
     if request.method != "POST":
         return JsonResponse({
-            "message": "POST request required"
+            "message":"POST method required"
         }, status=405)
 
 
     name = request.POST.get("name")
     number = request.POST.get("number")
-    st_id = request.POST.get("")
-    username = request.POST.get("username")
+    st_id = request.POST.get("st_id")
+    uni_id = request.POST.get("uni_id")
+    gender = request.POST.get("gender")
+    year = request.POST.get("year")
+    branch = request.POST.get("branch")
+    residence = request.POST.get("residence")
     email = request.POST.get("email")
-    password = request.POST.get("password")   
+    password = request.POST.get("password")
+
 
     if not (('@' in password or '$' in password) and password.isalnum()):
         return JsonResponse({"error": "Password is weak use '@','$' and numbers to create a strong password"})
 
-    if not number.isdigits():
-        return JsonResponse({
-            "error":"Enter a valid Mobile Number"
-        },status=400)
-
-    if 10<len(number)<10:
-        return JsonResponse({
-            "error":"Enter a valid 10 digit number"
-        },status=400)
-
-    if not name or not username or not email or not password or not number:
+    if not name or not email or not password or not number or not st_id or not uni_id or not gender or not year or not branch or not residence:
         return JsonResponse({
             "error": "All fields  are required"
         },status=400)
 
     try:
-        validate_email(email)
+        EmailValidator()(email)
     except ValidationError:
         return JsonResponse({
             "error":"Enter a Valid email"
@@ -59,3 +50,28 @@ def register(request):
         return JsonResponse({
             "error":"Email already exist"
         },status=400)
+    if User.objects.filter(st_id=st_id).exists():
+        return JsonResponse({
+            "error":"Student already registered"
+        }, status=400)
+    if User.objects.filter(uni_id= uni_id).exists():
+        return JsonResponse({"message":"Student already registered"}, status=400)
+
+    hashed_password = make_password(password)
+
+    user = User.objects.create(
+        name = name,
+        number = number,
+        student_id = st_id,
+        uni_roll = uni_id,
+        branch = branch,
+        email = email,
+        password = hashed_password,
+        gender = gender,
+        residence = residence,
+        year = year,
+    )
+
+    return JsonResponse({"message":"Registration successfull"}, status= 200)
+
+    
