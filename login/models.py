@@ -6,7 +6,7 @@ from django.core.validators import RegexValidator
 # Create your models here.
 
 
-class registration(models.Model):
+class Registration(models.Model):
 
     name = models.CharField(max_length=50)
     number = PhoneNumberField(_("Phone Number"),unique=True , region ='IN')
@@ -41,23 +41,23 @@ class registration(models.Model):
 
 
     BRANCH_CHOICE = [
-        'CSE',
-        'CSE(AIML)',
-        'CSE-DS',
-        'CS',
-        'IT',
-        'CS-IT',
-        'ECE',
-        'EN',
-        'OTHERS',
+        ('CSE', 'CSE'),
+        ('AIML', 'CSE (AI & ML)'),
+        ('DS', 'CSE (Data Science)'),
+        ('CS', 'Computer Science'),
+        ('IT', 'Information Technology'),
+        ('CSIT', 'CS-IT'),
+        ('ECE', 'Electronics & Communication'),
+        ('EN', 'Electronics & Instrumentation'),
+        ('OTH', 'Others'),
     ]
-    branch = models.CharField(choices=BRANCH_CHOICE)
+    branch = models.CharField(max_length=4,choices=BRANCH_CHOICE)
 
     RESIDENCE_CHOICE = [
         ('D', "Day Scholar"),
         ('H',"Hosteller"),
     ]
-    residence = models.CharField(max_length=2,choices=RESIDENCE_CHOICE)
+    residence = models.CharField(max_length=1,choices=RESIDENCE_CHOICE)
 
 
     email = models.EmailField(_("Email Address"), max_length=254)
