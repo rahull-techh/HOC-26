@@ -13,7 +13,7 @@ class Registration(models.Model):
     st_id = models.CharField(
         max_length =7,
         unique =True,
-        validators= [RegexValidator( regex = r'^\d{6,7}$',
+        validators= [RegexValidator( regex = r'^\d{7,8}$',
                                     message="Enter a Valid 6-7 digit Student number")])
     uni_id = models.CharField(
         max_length=13,

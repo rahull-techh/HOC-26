@@ -8,10 +8,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
 
-
-
 @csrf_exempt
 def register(request):
+
+    if request.method =="GET":
+        return render( request, 'registration.html')
 
     if request.method != "POST":
         return JsonResponse({
@@ -30,9 +31,21 @@ def register(request):
     email = request.POST.get("email")
     password = request.POST.get("password")
 
+    s1= str(st_id)
+    u1=str(uni_id)
+    p = s1[:2]
+    q=u1[:2]
+
+    if p != '25' or p!='24' or p!='23':
+        return render(request,'registration.html',{"error1":"Enter a valid Student number starting with 23 ,24 or 25"},status=400)
+    elif p != q:
+        return render(request,'registration.html',{"error2":f"Enter a valid University roll number starting with {p}"},status=400)
+
+    if st_id not in email:
+        return render(request,'registration.html',{"error3":f"Enter valid College email Containing {st_id}"},status=400)
 
     if not (('@' in password or '$' in password) and password.isalnum()):
-        return JsonResponse({"error": "Password is weak use '@','$' and numbers to create a strong password"})
+        return render(request , 'registration.html', {"error4":"Password is weak, use '@', '$' and combination of aphabets and numbers"},status=400)
 
     if not name or not email or not password or not number or not st_id or not uni_id or not gender or not year or not branch or not residence:
         return JsonResponse({
